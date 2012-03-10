@@ -1,0 +1,58 @@
+== mod_last_redis ==
+
+Simple ejabberd module implementing xmpp's last activity extension XEP-0012
+using a redis data store.
+
+It is using the redo library from Jacob Vorreuter that can be found on github.
+
+Tested with ejabberd 2.1.10.
+
+
+=== Specifications ===
+
+XEP-0012 specification can be found at http://xmpp.org/extensions/xep-0012.html
+
+
+=== Limitations ===
+
+As for mod_last_odbc, some web screen do not shows last activity properly
+when using mod_last_redis. See https://support.process-one.net/browse/EJAB-6.
+
+
+=== Installation ===
+
+ 1. Install and start a local redis server.
+ 
+    On ubuntu::
+   
+      # aptitude install redis-server
+      # service redis-server start
+
+ 2. Get and build redo::
+ 
+      $ git clone https://github.com/JacobVorreuter/redo.git
+      $ cd redo
+      $ make
+      
+ 3. Add redo to erlang path.
+    
+    For current user::
+ 
+      $ echo "code:add_pathz(\"$PWD/ebin\")." >> ~/.erlang
+      
+ 4. Get and build mod_last_redis::
+ 
+      $ git clone https://github.com/sylane/mod_last_redis.git
+      $ cd mod_last_redis
+      $ EJABBERD_ROOT=$WHERE_EJABBERD_IS ./build()
+  
+ 5. Copy mod_last_redis.beam to ejabberd ebin directory::
+ 
+      $ cp ebin/mod_last_redis.beam $WHERE_EJABBERD_IS/ebin
+ 
+ 6. Modify ejabberd.cfg:
+ 
+    Change {mod_last, []} to {mod_last_redis, []}.
+    
+ 7. Starts ejabberd.
+     
